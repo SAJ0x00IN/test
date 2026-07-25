@@ -8,7 +8,8 @@ $tenant = "aba1146c-dd62-4078-a5b7-a4e0668141eb"
 $client = "14d82eec-204b-4c2f-b7e8-296a70dab67e"    # Microsoft Graph CLI (public client)
 $scope  = "https://graph.microsoft.com/.default offline_access openid"
 
-Write-Host ("[*] Egress IP: " + (try{(Invoke-RestMethod https://ifconfig.me/ip -TimeoutSec 8).Trim()}catch{"n/a"}) + "  (must be the trusted/Cato egress for this test)") -ForegroundColor Cyan
+$eip = try { (Invoke-RestMethod https://ifconfig.me/ip -TimeoutSec 8).Trim() } catch { "n/a" }
+Write-Host "[*] Egress IP: $eip  (must be the trusted/Cato egress for this test)" -ForegroundColor Cyan
 
 # 1) nonce
 $nonce = (Invoke-RestMethod -Method POST -Uri "https://login.microsoftonline.com/common/oauth2/token" -Body "grant_type=srv_challenge").Nonce
